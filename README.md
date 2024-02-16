@@ -74,18 +74,17 @@ Before you begin, ensure you have the following installed on your local machine:
    `bash
     php artisan serve
     `
-   The application should now be running on http://localhost:8000.
-
-10. Open another terminal and compile assets:
-    `bash
+   
+11. Open another terminal and compile assets:
+    `
     npm run dev
     `
     or
-    `bash
+    `
     npm run build
     `
 
-11. Open your browser and go to http://localhost:8000.
+12. Open your browser and go to http://localhost:8000.
 
 ## Usage
 
