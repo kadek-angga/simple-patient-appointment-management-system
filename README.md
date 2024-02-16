@@ -71,7 +71,7 @@ Before you begin, ensure you have the following installed on your local machine:
     ```
 
 9. Start the development server:
-   `bash
+   `
     php artisan serve
     `
    
