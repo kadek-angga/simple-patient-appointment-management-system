@@ -14,6 +14,7 @@ const form = useForm({
     address: "",
     phone_number: "",
 });
+
 const submit = () => {
     form.post(route("patients.store"));
 };
