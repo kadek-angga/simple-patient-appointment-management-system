@@ -23,8 +23,8 @@ const showingNavigationDropdown = ref(false);
                                 <Link :href="route('dashboard')">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
-                                        height="16"
-                                        width="20"
+                                        height="36"
+                                        width="36"
                                         viewBox="0 0 640 512"
                                     >
                                         <path
