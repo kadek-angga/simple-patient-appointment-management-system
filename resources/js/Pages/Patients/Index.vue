@@ -9,22 +9,7 @@ const props = defineProps({
     filters: Object,
 });
 
-// const props = defineProps({
-//     filters: {
-//         type: Object,
-//         default: () => ({}),
-//     },
-// });
-
 let search = ref(props.filters.search);
-
-// watch(search, (value) => {
-//     Inertia.get(
-//         "/patients",
-//         { search: value },
-//         { preserveState: true, replace: true }
-//     );
-// });
 
 const searchPatients = () => {
     Inertia.get(
@@ -33,25 +18,6 @@ const searchPatients = () => {
         { preserveState: true, replace: true }
     );
 };
-
-// const results = ref([]);
-
-// const searchPatients = () => {
-//     if (search.value) {
-//         Inertia.get(
-//             route("patients.search", { query: search.value }),
-//             (data) => {
-//                 if (data.patients) {
-//                     results.value = data.patients;
-//                 } else {
-//                     results.value = [];
-//                 }
-//             }
-//         );
-//     } else {
-//         results.value = [];
-//     }
-// };
 
 const deletePatient = (id) => {
     Inertia.delete(route("patients.destroy", id));
@@ -130,7 +96,6 @@ const deletePatient = (id) => {
                         <table className="table-fixed w-full">
                             <thead>
                                 <tr className="bg-gray-100">
-                                    <!-- <th className="px-4 py-2 w-20">No.</th> -->
                                     <th className="px-4 py-2 w-20">ID</th>
                                     <th className="px-4 py-2">Name</th>
                                     <th className="px-4 py-2">Gender</th>
@@ -147,8 +112,18 @@ const deletePatient = (id) => {
                                         {{ patient.id }}
                                     </td>
                                     <td className="border px-4 py-2">
-                                        {{ patient.first_name }}
-                                        {{ patient.last_name }}
+                                        <Link
+                                            className="underline"
+                                            :href="
+                                                route(
+                                                    'patients.show',
+                                                    patient.id
+                                                )
+                                            "
+                                        >
+                                            {{ patient.first_name }}
+                                            {{ patient.last_name }}
+                                        </Link>
                                     </td>
                                     <td className="border px-4 py-2">
                                         {{ patient.gender }}

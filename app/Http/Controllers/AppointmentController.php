@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Appointment;
+use App\Models\Doctor;
 use App\Models\Patient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -19,7 +20,7 @@ class AppointmentController extends Controller
         //     'appointments' => Appointment::all(),
         // ]);
 
-        $appointments = Appointment::with('patient')->get();
+        $appointments = Appointment::with(['patient', 'doctor'])->get();
 
         return Inertia::render('Appointments/Index', [
             'appointments' => $appointments->map(function ($appointment) {
@@ -32,6 +33,10 @@ class AppointmentController extends Controller
                         'first_name' => $appointment->patient->first_name,
                         'last_name' => $appointment->patient->last_name,
                     ] : null,
+                    'doctor' => $appointment->doctor ? [
+                        'first_name' => $appointment->doctor->first_name,
+                        'last_name' => $appointment->doctor->last_name,
+                    ] : null,
                 ];
             }),
         ]);
@@ -43,12 +48,19 @@ class AppointmentController extends Controller
     public function create()
     {
         $patients = Patient::all();
+        $doctors = Doctor::all();
 
         return Inertia::render('Appointments/Create', [
             'patients' => $patients->map(function ($patient) {
                 return [
                     'id' => $patient->id,
                     'name' => $patient->first_name . ' ' . $patient->last_name,
+                ];
+            }),
+            'doctors' => $doctors->map(function ($doctor) {
+                return [
+                    'id' => $doctor->id,
+                    'name' => $doctor->first_name . ' ' . $doctor->last_name,
                 ];
             }),
         ]);
@@ -61,6 +73,7 @@ class AppointmentController extends Controller
     {
         Validator::make($request->all(), [
             'patient_id' => ['required', 'integer'],
+            'doctor_id' => ['required', 'integer'], // Add this line to the 'store' method
             'appointment_date' => ['required', 'date'],
             'appointment_time' => ['nullable', 'date_format:H:i'],
             'status' => ['required', 'string', 'max:255'],
@@ -76,11 +89,12 @@ class AppointmentController extends Controller
      */
     public function show($id)
     {
-        $appointment = Appointment::with('patient')->find($id);
+        $appointment = Appointment::with(['patient', 'doctor'])->find($id);
 
         return Inertia::render('Appointments/Show', [
             'appointment' => $appointment,
             'patient' => $appointment->patient->first_name . ' ' . $appointment->patient->last_name,
+            'doctor' => $appointment->doctor->first_name . ' ' . $appointment->doctor->last_name,
         ]);
     }
 
@@ -89,11 +103,12 @@ class AppointmentController extends Controller
      */
     public function edit($id)
     {
-        $appointment = Appointment::with('patient')->find($id);
+        $appointment = Appointment::with(['patient', 'doctor'])->find($id);
 
         return Inertia::render('Appointments/Edit', [
             'appointment' => $appointment,
             'patient' => $appointment->patient->first_name . ' ' . $appointment->patient->last_name,
+            'doctor' => $appointment->doctor->first_name . ' ' . $appointment->doctor->last_name,
         ]);
     }
 
@@ -105,6 +120,7 @@ class AppointmentController extends Controller
         // $appointment->update($request->all());
         Validator::make($request->all(), [
             'patient_id' => ['required', 'integer'],
+            'doctor_id' => ['required', 'integer'],
             'appointment_date' => ['required', 'date'],
             'appointment_time' => ['required', 'date_format:H:i'],
             'status' => ['required', 'string', 'max:255'],

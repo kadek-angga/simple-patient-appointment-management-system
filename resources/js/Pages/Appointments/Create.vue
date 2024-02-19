@@ -7,6 +7,7 @@ import { Head, Link, useForm } from "@inertiajs/vue3";
 
 const form = useForm({
     patient_id: "",
+    doctor_id: "",
     appointment_date: "",
     appointment_time: "",
     status: "",
@@ -14,6 +15,7 @@ const form = useForm({
 
 const props = defineProps({
     patients: Object,
+    doctors: Object,
 });
 
 const submit = () => {
@@ -62,7 +64,7 @@ const submit = () => {
                                             <label
                                                 for="first-name"
                                                 class="block text-sm font-medium leading-6 text-gray-900"
-                                                >Patient name</label
+                                                >Patient Name</label
                                             >
                                             <div class="mt-2">
                                                 <select
@@ -87,6 +89,37 @@ const submit = () => {
                                                     "
                                                 >
                                                     {{ form.errors.patient_id }}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="sm:col-span-3">
+                                            <label
+                                                for="first-name"
+                                                class="block text-sm font-medium leading-6 text-gray-900"
+                                                >Doctor Name</label
+                                            >
+                                            <div class="mt-2">
+                                                <select
+                                                    name="doctor_id"
+                                                    id="doctor_id"
+                                                    v-model="form.doctor_id"
+                                                    class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                >
+                                                    <option
+                                                        v-for="doctor in doctors"
+                                                        :key="doctor.id"
+                                                        :value="doctor.id"
+                                                    >
+                                                        {{ doctor.id }}
+                                                        {{ doctor.name }}
+                                                    </option>
+                                                </select>
+                                                <span
+                                                    class="text-red-600"
+                                                    v-if="form.errors.doctor_id"
+                                                >
+                                                    {{ form.errors.doctor_id }}
                                                 </span>
                                             </div>
                                         </div>
