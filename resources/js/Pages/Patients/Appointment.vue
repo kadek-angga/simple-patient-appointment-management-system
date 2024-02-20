@@ -1,30 +1,27 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import InputLabel from "@/Components/InputLabel.vue";
-import TextInput from "@/Components/TextInput.vue";
-// import BreezeTextArea from "@/Components/Textarea.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 
 const props = defineProps({
     appointment: Object,
-    patient: String,
-    doctor: String,
+    patient: Object,
+    doctors: Object,
 });
 
 const form = useForm({
-    patient_id: props.appointment.patient_id,
-    doctor_id: props.appointment.doctor_id,
-    appointment_date: props.appointment.appointment_date,
-    appointment_time: props.appointment.appointment_time,
-    status: props.appointment.status,
+    patient_id: props.patient.id,
+    doctor_id: "",
+    appointment_date: "",
+    appointment_time: "",
+    status: "",
 });
 
 const submit = () => {
-    form.put(route("appointments.update", props.appointment.id));
+    form.post(route("appointments.store"));
 };
 </script>
 <template>
-    <Head title="Appointment" />
+    <Head title="Patient" />
     <AuthenticatedLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -70,8 +67,8 @@ const submit = () => {
                                             <div class="mt-2">
                                                 <select
                                                     disabled
-                                                    name="patient_id"
-                                                    id="patient_id"
+                                                    name="id"
+                                                    id="id"
                                                     v-model="form.patient_id"
                                                     class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                 >
@@ -79,7 +76,8 @@ const submit = () => {
                                                         :value="form.patient_id"
                                                         selected
                                                     >
-                                                        {{ patient }}
+                                                        {{ patient.first_name }}
+                                                        {{ patient.last_name }}
                                                     </option>
                                                 </select>
                                                 <span
@@ -92,25 +90,27 @@ const submit = () => {
                                                 </span>
                                             </div>
                                         </div>
+
                                         <div class="sm:col-span-3">
                                             <label
                                                 for="first-name"
                                                 class="block text-sm font-medium leading-6 text-gray-900"
-                                                >Doctor name</label
+                                                >Doctor Name</label
                                             >
                                             <div class="mt-2">
                                                 <select
-                                                    disabled
                                                     name="doctor_id"
                                                     id="doctor_id"
                                                     v-model="form.doctor_id"
-                                                    class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                    class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                 >
                                                     <option
-                                                        :value="form.doctor_id"
-                                                        selected
+                                                        v-for="doctor in doctors"
+                                                        :key="doctor.id"
+                                                        :value="doctor.id"
                                                     >
-                                                        {{ doctor }}
+                                                        {{ doctor.id }}
+                                                        {{ doctor.name }}
                                                     </option>
                                                 </select>
                                                 <span

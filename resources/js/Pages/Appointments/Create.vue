@@ -58,9 +58,9 @@ const submit = () => {
                                     </p>
 
                                     <div
-                                        class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6"
+                                        class="mt-10 flex flex-col gap-x-6 gap-y-8"
                                     >
-                                        <div class="sm:col-span-3">
+                                        <div class="">
                                             <label
                                                 for="first-name"
                                                 class="block text-sm font-medium leading-6 text-gray-900"
@@ -71,7 +71,7 @@ const submit = () => {
                                                     name="patient-id"
                                                     id="patient-id"
                                                     v-model="form.patient_id"
-                                                    class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                    class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                 >
                                                     <option
                                                         v-for="patient in patients"
@@ -104,7 +104,7 @@ const submit = () => {
                                                     name="doctor_id"
                                                     id="doctor_id"
                                                     v-model="form.doctor_id"
-                                                    class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                    class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                 >
                                                     <option
                                                         v-for="doctor in doctors"
@@ -199,7 +199,7 @@ const submit = () => {
                                                     name="status"
                                                     id="status"
                                                     v-model="form.status"
-                                                    class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                    class="block w-4/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                 >
                                                     <option
                                                         value=""

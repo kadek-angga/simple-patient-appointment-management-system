@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AppoinmentPatientController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\PatientController;
@@ -40,6 +41,8 @@ Route::middleware('auth')->group(function () {
     // Patients routes
     Route::resource('patients', PatientController::class);
     Route::get('/patients/search', [PatientController::class, 'search'])->name('patients.search');
+    Route::get('/patients/{id}/appointments/create', [AppoinmentPatientController::class, 'create'])->name('patients.appointments.create');
+    Route::post('/patients/{id}/appointments', [AppoinmentPatientController::class, 'store'])->name('patients.appointments.store');
 
     // Appointments routes
     Route::resource('appointments', AppointmentController::class);

@@ -122,7 +122,7 @@ class AppointmentController extends Controller
             'patient_id' => ['required', 'integer'],
             'doctor_id' => ['required', 'integer'],
             'appointment_date' => ['required', 'date'],
-            'appointment_time' => ['required', 'date_format:H:i'],
+            'appointment_time' => ['required'],
             'status' => ['required', 'string', 'max:255'],
         ])->validate();
 
