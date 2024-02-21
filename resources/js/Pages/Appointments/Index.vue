@@ -1,6 +1,6 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { Head, Link } from "@inertiajs/vue3";
 import { Inertia } from "@inertiajs/inertia";
 
@@ -11,6 +11,27 @@ const props = defineProps({
 const deleteAppointment = (id) => {
     Inertia.delete(route("appointments.destroy", id));
 };
+
+// Pagination
+let currentPage = ref(1);
+let itemsPerPage = ref(10);
+
+// Computed property for paginated patients
+const paginatedAppointments = computed(() => {
+    const start = (currentPage.value - 1) * itemsPerPage.value;
+    const end = start + itemsPerPage.value;
+    return props.appointments.slice(start, end);
+});
+
+// Function to change page
+const changePage = (page) => {
+    currentPage.value = page;
+};
+
+const start = computed(() => (currentPage.value - 1) * itemsPerPage.value);
+const end = computed(() =>
+    Math.min(start.value + itemsPerPage.value, props.appointments.length)
+);
 </script>
 <template>
     <Head title="Appointment" />
@@ -51,7 +72,7 @@ const deleteAppointment = (id) => {
                             </thead>
                             <tbody>
                                 <tr
-                                    v-for="appointment in appointments"
+                                    v-for="appointment in paginatedAppointments"
                                     :key="appointment.id"
                                 >
                                     <td className="border px-4 py-2">
@@ -76,7 +97,24 @@ const deleteAppointment = (id) => {
                                         {{ appointment.appointment_time }}
                                     </td>
                                     <td className="border px-4 py-2">
-                                        {{ appointment.status }}
+                                        <div
+                                            :class="{
+                                                'text-center text-white bg-red-500 rounded-full':
+                                                    appointment.status ===
+                                                    'Canceled',
+                                                'text-center text-white bg-blue-500 rounded-full':
+                                                    appointment.status ===
+                                                    'Scheduled',
+                                                'text-center text-white bg-blue-800 rounded-full':
+                                                    appointment.status ===
+                                                    'In Progress',
+                                                'text-center text-white bg-green-500 rounded-full':
+                                                    appointment.status ===
+                                                    'Completed',
+                                            }"
+                                        >
+                                            {{ appointment.status }}
+                                        </div>
                                     </td>
                                     <td className="border px-4 py-2">
                                         <div
@@ -162,6 +200,61 @@ const deleteAppointment = (id) => {
                                 </tr>
                             </tbody>
                         </table>
+
+                        <div class="mt-4">
+                            <div
+                                class="flex items-start justify-start text-center mt-2"
+                            >
+                                Showing {{ start + 1 }} to {{ end }} of
+                                {{ appointments.length }} results
+                            </div>
+                            <div class="flex justify-center">
+                                <button
+                                    class="mx-1 px-4 py-2 rounded font-semibold bg-white border border-gray-500"
+                                    :class="{
+                                        'text-gray-400': currentPage === 1,
+                                    }"
+                                    :disabled="currentPage === 1"
+                                    @click="changePage(currentPage - 1)"
+                                >
+                                    Previous
+                                </button>
+                                <button
+                                    v-for="page in Math.ceil(
+                                        appointments.length / itemsPerPage
+                                    )"
+                                    :key="page"
+                                    :class="{
+                                        'bg-blue-500 text-white':
+                                            page === currentPage,
+                                    }"
+                                    class="mx-1 px-4 py-2 rounded"
+                                    @click="changePage(page)"
+                                >
+                                    {{ page }}
+                                </button>
+                                <button
+                                    class="mx-1 px-4 py-2 rounded font-semibold bg-white border border-gray-500"
+                                    :class="{
+                                        'text-gray-400':
+                                            currentPage ===
+                                            Math.ceil(
+                                                appointments.length /
+                                                    itemsPerPage
+                                            ),
+                                    }"
+                                    :disabled="
+                                        currentPage ===
+                                        Math.ceil(
+                                            appointments.length / itemsPerPage
+                                        )
+                                    "
+                                    @click="changePage(currentPage + 1)"
+                                >
+                                    Next
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

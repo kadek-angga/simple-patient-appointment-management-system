@@ -1,6 +1,6 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { ref, watchEffect, watch } from "vue";
+import { ref, computed } from "vue";
 import { Head, Link } from "@inertiajs/vue3";
 import { Inertia } from "@inertiajs/inertia";
 
@@ -11,6 +11,27 @@ const props = defineProps({
 const deleteDoctor = (id) => {
     Inertia.delete(route("doctors.destroy", id));
 };
+
+// Pagination
+let currentPage = ref(1);
+let itemsPerPage = ref(10);
+
+// Computed property for paginated patients
+const paginatedDoctors = computed(() => {
+    const start = (currentPage.value - 1) * itemsPerPage.value;
+    const end = start + itemsPerPage.value;
+    return props.doctors.slice(start, end);
+});
+
+// Function to change page
+const changePage = (page) => {
+    currentPage.value = page;
+};
+
+const start = computed(() => (currentPage.value - 1) * itemsPerPage.value);
+const end = computed(() =>
+    Math.min(start.value + itemsPerPage.value, props.doctors.length)
+);
 </script>
 <template>
     <Head title="Doctor" />
@@ -45,7 +66,10 @@ const deleteDoctor = (id) => {
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="doctor in doctors" :key="doctor.id">
+                                <tr
+                                    v-for="doctor in paginatedDoctors"
+                                    :key="doctor.id"
+                                >
                                     <td className="border px-4 py-2">
                                         {{ doctor.id }}
                                     </td>
@@ -146,6 +170,58 @@ const deleteDoctor = (id) => {
                                 </tr>
                             </tbody>
                         </table>
+
+                        <div class="mt-4">
+                            <div
+                                class="flex items-start justify-start text-center mt-2"
+                            >
+                                Showing {{ start + 1 }} to {{ end }} of
+                                {{ doctors.length }} results
+                            </div>
+                            <div class="flex justify-center">
+                                <button
+                                    class="mx-1 px-4 py-2 rounded font-semibold bg-white border border-gray-500"
+                                    :class="{
+                                        'text-gray-400': currentPage === 1,
+                                    }"
+                                    :disabled="currentPage === 1"
+                                    @click="changePage(currentPage - 1)"
+                                >
+                                    Previous
+                                </button>
+                                <button
+                                    v-for="page in Math.ceil(
+                                        doctors.length / itemsPerPage
+                                    )"
+                                    :key="page"
+                                    :class="{
+                                        'bg-blue-500 text-white':
+                                            page === currentPage,
+                                    }"
+                                    class="mx-1 px-4 py-2 rounded"
+                                    @click="changePage(page)"
+                                >
+                                    {{ page }}
+                                </button>
+                                <button
+                                    class="mx-1 px-4 py-2 rounded font-semibold bg-white border border-gray-500"
+                                    :class="{
+                                        'text-gray-400':
+                                            currentPage ===
+                                            Math.ceil(
+                                                doctors.length / itemsPerPage
+                                            ),
+                                    }"
+                                    :disabled="
+                                        currentPage ===
+                                        Math.ceil(doctors.length / itemsPerPage)
+                                    "
+                                    @click="changePage(currentPage + 1)"
+                                >
+                                    Next
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
