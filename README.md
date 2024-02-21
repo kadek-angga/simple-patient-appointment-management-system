@@ -91,3 +91,12 @@ Before you begin, ensure you have the following installed on your local machine:
 Open your browser and go to http://localhost:8000.
 Patients and healthcare providers can log in with their credentials.
 Patients can schedule appointments, and healthcare providers can manage appointments via the dashboard.
+
+1. Landing Page/Welcome Page
+   ![Screenshot 2024-02-21 171017](https://github.com/kadek-angga/simple-patient-appointment-management-system/assets/132994058/27e3e1c7-7f58-4694-8921-09a2aaafd53f)
+2. Register & Login Page
+   ![image](https://github.com/kadek-angga/simple-patient-appointment-management-system/assets/132994058/32f39d4b-5ec1-4e2c-bc75-e7cd245d653e)
+   ![image](https://github.com/kadek-angga/simple-patient-appointment-management-system/assets/132994058/2386fd8f-71b4-4186-b183-f956047147da)
+
+
+
