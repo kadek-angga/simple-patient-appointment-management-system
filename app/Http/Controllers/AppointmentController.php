@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Appointment;
 use App\Models\Doctor;
 use App\Models\Patient;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
@@ -26,7 +27,7 @@ class AppointmentController extends Controller
             'appointments' => $appointments->map(function ($appointment) {
                 return [
                     'id' => $appointment->id,
-                    'appointment_date' => $appointment->appointment_date,
+                    'appointment_date' => Carbon::parse($appointment->appointment_date)->format('d-m-Y'),
                     'appointment_time' => $appointment->appointment_time,
                     'status' => $appointment->status,
                     'patient' => $appointment->patient ? [
@@ -73,7 +74,7 @@ class AppointmentController extends Controller
     {
         Validator::make($request->all(), [
             'patient_id' => ['required', 'integer'],
-            'doctor_id' => ['required', 'integer'], // Add this line to the 'store' method
+            'doctor_id' => ['required', 'integer'], 
             'appointment_date' => ['required', 'date'],
             'appointment_time' => ['nullable', 'date_format:H:i'],
             'status' => ['required', 'string', 'max:255'],
@@ -90,6 +91,7 @@ class AppointmentController extends Controller
     public function show($id)
     {
         $appointment = Appointment::with(['patient', 'doctor'])->find($id);
+        $appointment->appointment_date = Carbon::parse($appointment->appointment_date)->format('d-m-Y');
 
         return Inertia::render('Appointments/Show', [
             'appointment' => $appointment,

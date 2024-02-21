@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Patient;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 use Illuminate\Support\Facades\Validator;
@@ -59,6 +60,7 @@ class PatientController extends Controller
     public function show($id)
     {
         $patient = Patient::find($id);
+        $patient->date_of_birth = Carbon::parse($patient->date_of_birth)->format('d-m-Y');
 
         return Inertia::render('Patients/Show', [
             'patient' => $patient,
