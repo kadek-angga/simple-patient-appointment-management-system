@@ -35,7 +35,7 @@ const deleteDoctor = (id) => {
                             </div>
                             <div class="flex justify-end">
                                 <Link
-                                    className="px-4 py-2 text-white bg-blue-500 rounded-md focus:outline-none"
+                                    className="px-4 py-2 text-white bg-yellow-500 rounded-md focus:outline-none"
                                     :href="route('doctors.edit', doctor.id)"
                                 >
                                     <svg

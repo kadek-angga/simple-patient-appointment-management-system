@@ -98,17 +98,18 @@ const end = computed(() =>
                                     </td>
                                     <td className="border px-4 py-2">
                                         <div
+                                            class="text-center text-white rounded-full"
                                             :class="{
-                                                'text-center text-white bg-red-500 rounded-full':
+                                                'bg-red-500':
                                                     appointment.status ===
                                                     'Canceled',
-                                                'text-center text-white bg-blue-500 rounded-full':
+                                                'bg-blue-500':
                                                     appointment.status ===
                                                     'Scheduled',
-                                                'text-center text-white bg-blue-800 rounded-full':
+                                                'bg-blue-800':
                                                     appointment.status ===
                                                     'In Progress',
-                                                'text-center text-white bg-green-500 rounded-full':
+                                                'bg-green-500':
                                                     appointment.status ===
                                                     'Completed',
                                             }"
